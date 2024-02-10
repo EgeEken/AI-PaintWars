@@ -69,7 +69,17 @@ After sufficient training and testing i decided to replace one of the team membe
 
 Here are some visuals of it in action:
 
+![arena0_](https://github.com/EgeEken/AI-PaintWars/assets/96302110/fbdaa911-a761-4094-9db6-3dae9070c714)
 
+![arena1_](https://github.com/EgeEken/AI-PaintWars/assets/96302110/cff6581a-8cff-4ffa-8ce8-0d5c56b65778)
 
+![arena3_](https://github.com/EgeEken/AI-PaintWars/assets/96302110/a989c7d9-2542-4a6e-854c-6103e5dc8466)
 
-I have also made a bash script to run matches with my model against the given opponent model, clean up and save the results in a text file, and then return the number of wins for each side and draws, so thanks to the shell class in the second year for that
+![arena4_](https://github.com/EgeEken/AI-PaintWars/assets/96302110/aed07beb-1284-4b6f-b516-52265517f860)
+
+![arena5_](https://github.com/EgeEken/AI-PaintWars/assets/96302110/598b38da-9b22-449b-b8ce-dec0c4b35366)
+
+I have also made a bash script to run matches with my model against the given opponent model, clean up and save the results in a text file, and then return the number of wins for each side and draws, so thanks to the shell class in the second year for that, here are the results of my final model against the given opponent algorithm:
+
+<img width="256" alt="image" src="https://github.com/EgeEken/AI-PaintWars/assets/96302110/aed9ffdb-ace2-4a17-8e83-9998270d95dd">
+
