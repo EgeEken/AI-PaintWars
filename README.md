@@ -14,13 +14,18 @@ Two teams of 8 robots ("red team" and "blue team") compete to visit an arena div
 
 After trying out a few conditional algorithms, and not being satisfied with the success rate, as well as being a bit frustrated with dealing with edge cases (often quite literally "edge" cases, where the robots would get stuck on edges because the parameter i chose for rotation was a little too high for example), i decided to train a Neural Network using an evolutionary learning algorithm.
 
-At first i used the model recommended by the class material, which would judge the quality of the model by the distance taken from the starting point, which could correctly incentivize avoiding obstacles, but also to simply move away rather than go over as much land as possible. This is not the best way to train a model for the goal of winning at the paintwars game, for this reason:
+At first i used the model recommended by the class material. Increasing the parameter count, and implementing a two layer neural network system instead of simply 8 parameters that would apply to each sensor directly. This allows for a higher level of "reasoning" to be performed by the algorithm, as now the weights will take into account the relations between the sensors as well.
+
+
+
+
+But a core issue is that the model would still only judge the quality of the model by the distance taken from the starting point, which could correctly incentivize avoiding obstacles, but also to simply move away rather than go over as much land as possible. This is not the best way to train a model for the goal of winning at the paintwars game, for this reason:
 
 ![image](https://github.com/EgeEken/AI-PaintWars/assets/96302110/2b8de771-15f8-4211-93d0-d6dbd19eadb3)
 
 So to fit better for the task, i changed the rewarding mechanisms to select the "Superior Genes" which would be selected and then mutated to look for a new best gene parameter to "evolve". The new version i made instead looks for the amount of tiles went over. 
 
-I trained a few models this way but after noticing the success of the one trained on an empty arena alone, i decided to make a full team of the models trained on arena 0, which had a pretty good success rate of 68% against the opponent given to us by the teacher
+I trained a few models this way but after noticing the success of the one trained on an empty arena alone, i decided to make a full team of the models trained on arena 0, which had a pretty good success rate of 68% against the opponent algorithm given to us by the teacher
 
 The training is done on the file NN_algorithm.py, i implemented a pretty intuitive system to change training parameters, all the learning parameters can be tweaked with these variables:
 
@@ -30,7 +35,37 @@ mutation_rate = 10
 
 w_size = 10
 ```
-The code prepares the correct sizes for the parameters and weights and biases accordingly, so no need to add or change code to make it work
+The code prepares the correct sizes for the parameters and weights accordingly, so no need to add or change code to make it work
 
+```python
+sensors = np.array([sensors["sensor_back_right"]["distance"],
+			sensors["sensor_back"]["distance"],
+			sensors["sensor_back_left"]["distance"],
+			sensors["sensor_left"]["distance"],
+			sensors["sensor_front_left"]["distance"],
+			sensors["sensor_front"]["distance"],
+			sensors["sensor_front_right"]["distance"],
+			sensors["sensor_right"]["distance"]])
+	
+len_s = len(sensors)
+sensors = sensors.reshape((1,len_s))
+rot_w1 = np.array(param[:w_size*len_s]).reshape((len_s,w_size))
+rot_w2 = np.array(param[w_size*len_s:w_size*(len_s+1)]).reshape((w_size,1))
+	
+tra_w1 = np.array(param[w_size*(len_s+1):w_size*(len_s+1) + (len_s*4)]).reshape((len_s,4))
+tra_w2 = np.array(param[w_size*(len_s+1) + (len_s*4):paramcount]).reshape((4,1))
+	
+rotation = sensors.dot(rot_w1).dot(rot_w2)[0][0]
+	
+translation = sensors.dot(tra_w1).dot(tra_w2)[0][0]
+	
+translation = math.tanh(translation)
+rotation = math.tanh(rotation)
+```
 
+If there is already a base model that is intended to be used as a starting point for the model, it will load the file "bestParam1" and use it as the weights, if no such bestParam1 file is found, it will start fresh with a randomly generated weights parameter
+
+After sufficient training and testing i decided to replace one of the team member robots with a simple algorithm that simply turns around when faced with an obstacle, and this actually ended up giving slightly better results overall, so i kept this as my final version to submit.
+
+Here are some visuals of it in action:
 
